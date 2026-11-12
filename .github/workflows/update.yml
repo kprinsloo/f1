@@ -1,0 +1,79 @@
+name: Update F1 tracker
+
+on:
+  schedule:
+    # Monday to Wednesday at 06:47 UTC, March to December only: results land in F1DB a day or two
+    # after a race. Between race weekends update.py stops before making any request, and a run
+    # with no new data commits nothing and does not redeploy the site.
+    - cron: "47 6 * 3-12 1-3"
+  workflow_dispatch:
+    inputs:
+      season:
+        description: "Season to rebuild (leave empty for the current year)"
+        required: false
+      force:
+        description: "Check F1DB even if no race was held recently"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: tracker
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Update season from F1DB (plus lap data from OpenF1)
+        env:
+          F1DB_CACHE: ${{ runner.temp }}/f1db
+          GITHUB_TOKEN: ${{ github.token }}
+          FORCE: ${{ inputs.force && '1' || '0' }}
+        run: python update.py ${{ inputs.season }}
+
+      - name: Commit new data
+        id: commit
+        run: |
+          git add data
+          if git diff --cached --quiet; then
+            echo "No new results."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+            git commit -m "Update F1 points data"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # The site is only rebuilt when the data changed (or on a manual run).
+      - name: Build site
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        run: |
+          mkdir -p _site
+          cp -r index.html assets _site/
+          cp -r data _site/
+      - uses: actions/configure-pages@v5
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+      - uses: actions/upload-pages-artifact@v3
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        with:
+          path: _site
+      - id: deploy
+        if: steps.commit.outputs.changed == 'true' || github.event_name == 'workflow_dispatch'
+        uses: actions/deploy-pages@v4
