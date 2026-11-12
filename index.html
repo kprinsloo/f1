@@ -1,0 +1,500 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>F1 Points Tracker</title>
+<script src="assets/chart.umd.js"></script>
+<style>
+  /* Theme matched to the FPL Tracker dashboard */
+  :root {
+    color-scheme: dark;
+    --bg: #111318; --card: #1a1d25; --text: #e8eaf0; --muted: #9aa1b2; --line: #2b303b;
+    --head: #24102a; --headfg: #fff; --accent: #b88cff; --accent2: #2fd08a; --bad: #e11d48;
+    --hover: rgba(184,140,255,.07); --grid: rgba(255,255,255,.06);
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+         font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 16px 16px 48px; }
+  .band { background: var(--head); color: var(--headfg); padding: 18px 16px 0; }
+  .band .inner { max-width: 1280px; margin: 0 auto; }
+  header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  header label { font-size: 13px; opacity: .85; }
+  h1 { margin: 0; font-size: 22px; }
+  h1 span { color: var(--accent2); }
+  .sub { opacity: .8; font-size: 13px; margin-top: 4px; }
+  select { font: inherit; font-size: 14px; color: var(--text); background: var(--card); border: 1px solid var(--line);
+           border-radius: 6px; padding: 6px 9px; cursor: pointer; }
+  input { accent-color: var(--accent); }
+  .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 16px; }
+  .kpi { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  .kpi .label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  .kpi .value { font-size: 24px; font-weight: 650; margin-top: 2px; }
+  .kpi .note { color: var(--muted); font-size: 12px; }
+  .tabs { display: flex; gap: 2px; overflow-x: auto; }
+  .tabs button { font: inherit; color: var(--headfg); background: none; border: 0; border-bottom: 3px solid transparent;
+                 opacity: .7; padding: 10px 14px; cursor: pointer; white-space: nowrap; }
+  .tabs button:hover { opacity: 1; }
+  .tabs button[aria-selected="true"] { opacity: 1; border-color: var(--accent2); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 16px; margin-bottom: 16px; min-width: 0; }
+  .card h2 { margin: 0 0 12px; font-size: 16px; }
+  .chart { position: relative; height: 420px; }
+  @media (max-width: 600px) { .chart { height: 320px; } }
+  .tablewrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; }
+  th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  tbody tr:hover td { background: var(--hover); }
+  th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .04em; }
+  th:nth-child(2), td:nth-child(2), th:nth-child(3), td:nth-child(3) { text-align: left; }
+  td .sw { display: inline-block; width: 4px; height: 16px; border-radius: 2px; vertical-align: middle; margin-right: 8px; }
+  td.pts { font-weight: 650; }
+  .up { color: var(--accent2); } .down { color: var(--bad); }
+  footer { color: var(--muted); font-size: 12px; }
+  footer a { color: inherit; }
+  .error { padding: 40px; text-align: center; color: var(--muted); }
+  .card .hint { color: var(--muted); font-size: 13px; margin: -6px 0 12px; }
+  .chart.short { height: 360px; }
+  #grid td, #grid th { padding: 6px 6px; text-align: center; }
+  #grid td:first-child, #grid th:first-child { text-align: left; position: sticky; left: 0; background: var(--card); }
+  #grid td.res { min-width: 34px; border-radius: 4px; font-size: 13px; }
+  #grid td.p1 { background: #f2c94c; color: #16161a; font-weight: 650; }
+  #grid td.p2 { background: #c9ccd3; color: #16161a; font-weight: 650; }
+  #grid td.p3 { background: #d79a63; color: #16161a; font-weight: 650; }
+  #grid td.pts { background: rgba(47,208,138,.16); font-weight: 500; }
+  #grid td.out { color: var(--bad); font-size: 11px; }
+  #grid td.dns { color: var(--muted); font-size: 11px; }
+  #grid sup { font-size: 9px; margin-left: 1px; }
+  .legend { color: var(--muted); font-size: 12px; margin-top: 10px; }
+  .legend span { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin: 0 4px 0 10px; vertical-align: -1px; }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 16px; }
+  .two .card { margin-bottom: 0; }
+  .cardhead { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .cardhead h2 { margin: 0; }
+  .card h3 { margin: 16px 0 8px; font-size: 14px; font-weight: 600; color: var(--muted); }
+  [hidden] { display: none !important; }
+  .two { margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="band"><div class="inner">
+  <header>
+    <div>
+      <h1><span>F1</span> Points Tracker</h1>
+      <div class="sub" id="sub">Loading…</div>
+    </div>
+    <label>Season <select id="season"></select></label>
+  </header>
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-view="drivers">Drivers</button>
+    <button role="tab" aria-selected="false" data-view="constructors">Constructors</button>
+    <button role="tab" aria-selected="false" data-view="race">Race analysis</button>
+  </div>
+</div></div>
+<div class="wrap">
+
+  <section class="kpis" id="kpis"></section>
+
+  <div id="seasonView">
+
+  <div class="card">
+    <h2 id="chartTitle">Cumulative points after each Grand Prix</h2>
+    <div class="chart"><canvas id="chart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h2 id="tableTitle">Standings</h2>
+    <div class="tablewrap"><table id="table"></table></div>
+  </div>
+
+  <div class="card">
+    <h2 id="statsTitle">Season stats</h2>
+    <p class="hint">Poles are P1 in qualifying. Places gained compares the starting grid with the finish (classified finishes only). Pit times are time in the pit lane, entry to exit.</p>
+    <div class="tablewrap"><table id="stats"></table></div>
+  </div>
+
+  <div class="card">
+    <h2 id="splitTitle">Grand Prix points vs sprint points</h2>
+    <div class="chart short"><canvas id="split"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h2>Finishing position in every Grand Prix</h2>
+    <p class="hint">Hover a cell for qualifying, grid and retirement details.</p>
+    <div class="tablewrap"><table id="grid"></table></div>
+    <div class="legend"><span style="background:#f2c94c"></span>Win<span style="background:#c9ccd3"></span>2nd<span style="background:#d79a63"></span>3rd<span style="background:rgba(47,208,138,.35)"></span>Points
+      &nbsp;· <sup>P</sup> pole &nbsp;· <sup>F</sup> fastest lap &nbsp;· <b style="color:var(--bad)">DNF</b> retired</div>
+  </div>
+
+  </div>
+
+  <div id="raceView" hidden>
+  <div class="card" id="lapNone"><p class="hint" style="margin:0">No lap-by-lap data for this season yet. Run the update to download it.</p></div>
+  <div class="card" id="lapCard" hidden>
+    <div class="cardhead">
+      <h2>Lap by lap</h2>
+      <label>Race <select id="lapRace"></select></label>
+    </div>
+    <p class="hint" id="lapHint">Top 10 finishers shown, click the legend to add or remove drivers. Dots mark pit stops.</p>
+    <h3>Position on every lap</h3>
+    <div class="chart"><canvas id="lapPos"></canvas></div>
+    <div id="lapGapWrap">
+    <h3>Gap to the leader</h3>
+    <p class="hint">Seconds behind the first car across the line on each lap. Lapped cars show their real time gap.</p>
+    <div class="chart short"><canvas id="lapGap"></canvas></div>
+    </div>
+    <h3>Lap times</h3>
+    <p class="hint"><label><input type="checkbox" id="lapAll"> Show slow laps too (safety car, pit stops, first lap)</label>
+      <span id="lapTimeHint"></span></p>
+    <div class="chart short"><canvas id="lapTime"></canvas></div>
+  </div>
+
+  </div>
+
+  <footer id="footer"></footer>
+</div>
+
+<script>
+const state = { season: null, view: "drivers", drivers: [], constructors: [], rounds: [], chart: null };
+const $ = id => document.getElementById(id);
+const css = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+const getJSON = path => fetch(path, { cache: "no-cache" }).then(r => { if (!r.ok) throw new Error(path); return r.json(); });
+
+async function init() {
+  let seasons;
+  try { seasons = await getJSON("data/seasons.json"); } catch { seasons = [new Date().getFullYear()]; }
+  $("season").innerHTML = seasons.map(s => `<option>${s}</option>`).join("");
+  $("season").onchange = e => load(+e.target.value);
+  document.querySelectorAll(".tabs button").forEach(b => b.onclick = () => {
+    document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-selected", x === b));
+    const race = b.dataset.view === "race";
+    $("seasonView").hidden = race; $("raceView").hidden = !race;
+    if (race) { if (state.lapRedraw) state.lapRedraw(); }   // charts need a visible canvas to size themselves
+    else { state.view = b.dataset.view; render(); }
+  });
+  load(seasons[0]);
+}
+
+async function load(season) {
+  state.season = season;
+  const base = `data/${season}/`;
+  try {
+    [state.drivers, state.constructors, state.rounds] = await Promise.all(
+      ["dash_drivers", "dash_constructors", "dash_rounds"].map(n => getJSON(base + n + ".json")));
+  } catch {
+    $("sub").textContent = `No data for ${season} yet.`;
+    $("kpis").innerHTML = ""; $("table").innerHTML = "";
+    ["stats", "grid"].forEach(id => $(id).innerHTML = "");
+    [state.chart, state.split, state.lapPos, state.lapTime].forEach(c => c && c.destroy());
+    $("lapCard").hidden = true; $("lapNone").hidden = false;
+    return;
+  }
+  try {
+    const log = await getJSON(base + "changelog.json");
+    const last = log[log.length - 1];
+    $("footer").innerHTML = `Data: <a href="https://github.com/f1db/f1db">F1DB</a> · last changed ${new Date(last.at).toLocaleString()}`;
+  } catch { $("footer").innerHTML = `Data: <a href="https://github.com/f1db/f1db">F1DB</a>`; }
+  render();
+  loadLaps(base);
+}
+
+// ---- Lap by lap (data/<season>/laps/, from OpenF1) ----
+async function loadLaps(base) {
+  [state.lapPos, state.lapTime, state.lapGap].forEach(c => c && c.destroy());
+  state.lapPos = state.lapTime = state.lapGap = null;
+  let have = [];
+  try { have = await getJSON(base + "laps/index.json"); } catch {}
+  $("lapCard").hidden = !have.length; $("lapNone").hidden = !!have.length;
+  state.lapRedraw = null;
+  if (!have.length) return;
+  if (!$("footer").innerHTML.includes("openf1")) $("footer").innerHTML += ` · lap data: <a href="https://openf1.org">OpenF1</a>`;
+  const name = n => state.rounds.find(r => r.round === n)?.gpName ?? `Round ${n}`;
+  $("lapRace").innerHTML = have.slice().reverse().map(n => `<option value="${n}">Round ${n} · ${name(n)}</option>`).join("");
+  $("lapRace").onchange = e => drawLapRace(base, +e.target.value);
+  state.lapRedraw = () => drawLapRace(base, +$("lapRace").value);
+  if (!$("raceView").hidden) state.lapRedraw();
+}
+
+async function drawLapRace(base, round) {
+  let race;
+  try { race = await getJSON(`${base}laps/${String(round).padStart(2, "0")}.json`); } catch { return; }
+  if (!window.Chart) return;
+  const muted = css("--muted"), grid = css("--grid");
+  const labels = ["Grid", ...Array.from({ length: race.laps }, (_, i) => i + 1)];
+  const seen = {};
+  const mk = (d, i, data) => {
+    const second = (seen[d.teamId] = (seen[d.teamId] || 0) + 1) > 1;
+    const pit = new Set(d.pits);
+    return {
+      label: d.abbr, data, borderColor: d.color, backgroundColor: d.color, borderWidth: 1.75,
+      borderDash: second ? [6, 4] : [], tension: 0, spanGaps: false, hidden: i >= 10,
+      pointRadius: ctx => pit.has(labels[ctx.dataIndex]) ? 4 : 0, pointHoverRadius: 5,
+    };
+  };
+  const finish = d => typeof d.finish === "number" ? `P${d.finish}` : d.finish;
+  const legend = { position: "bottom", labels: { color: muted, boxWidth: 14 } };
+  const pitNote = (d, lap) => d.pits.includes(lap) ? " · pit" : "";
+
+  Object.keys(seen).forEach(k => delete seen[k]);
+  const posSets = race.drivers.map((d, i) => mk(d, i, [d.grid ?? null, ...d.pos]));
+  if (state.lapPos) state.lapPos.destroy();
+  state.lapPos = new Chart($("lapPos"), {
+    type: "line", data: { labels, datasets: posSets },
+    options: {
+      responsive: true, maintainAspectRatio: false, interaction: { mode: "nearest", intersect: false },
+      scales: {
+        x: { ticks: { color: muted, autoSkip: true, maxTicksLimit: 20 }, grid: { color: grid }, title: { display: true, text: "Lap", color: muted } },
+        y: { reverse: true, min: 0.5, max: race.drivers.length + 0.5, ticks: { color: muted, autoSkip: false, callback: v => "P" + v }, grid: { color: grid },
+             afterBuildTicks: ax => { const n = race.drivers.length, step = ax.height < 300 ? 5 : 2;
+                                      ax.ticks = [1, ...Array.from({ length: n }, (_, i) => i + 1).filter(v => v % step === 0 && v > 1)].map(value => ({ value })); } },
+      },
+      plugins: { legend, tooltip: {
+        itemSort: (a, b) => a.parsed.y - b.parsed.y,
+        callbacks: { title: it => it[0].dataIndex ? `Lap ${labels[it[0].dataIndex]}` : "Starting grid",
+                     label: it => { const d = race.drivers[it.datasetIndex];
+                                    return ` P${it.parsed.y} ${d.abbr} (finished ${finish(d)})${pitNote(d, labels[it.dataIndex])}`; } } } },
+    },
+  });
+
+  Object.keys(seen).forEach(k => delete seen[k]);
+  // Gap to the leader (lap files saved before this was added have no gaps until the update is re-run).
+  Object.keys(seen).forEach(k => delete seen[k]);
+  const hasGap = race.drivers.some(d => d.gap);
+  $("lapGapWrap").hidden = !hasGap;
+  if (state.lapGap) state.lapGap.destroy();
+  state.lapGap = hasGap ? new Chart($("lapGap"), {
+    type: "line", data: { labels, datasets: race.drivers.map((d, i) => mk(d, i, [null, ...(d.gap || [])])) },
+    options: {
+      responsive: true, maintainAspectRatio: false, interaction: { mode: "nearest", intersect: false },
+      scales: {
+        x: { ticks: { color: muted, autoSkip: true, maxTicksLimit: 20 }, grid: { color: grid }, title: { display: true, text: "Lap", color: muted } },
+        y: { reverse: true, min: 0, ticks: { color: muted, callback: v => "+" + v + "s" }, grid: { color: grid } },
+      },
+      plugins: { legend, tooltip: {
+        itemSort: (a, b) => a.parsed.y - b.parsed.y,
+        callbacks: { title: it => `Lap ${labels[it[0].dataIndex]}`,
+                     label: it => { const d = race.drivers[it.datasetIndex];
+                                    return ` ${d.abbr} ${it.parsed.y ? "+" + it.parsed.y.toFixed(1) + "s" : "leader"}${pitNote(d, labels[it.dataIndex])}`; } } } },
+    },
+  }) : null;
+
+  const lapFmt = s => s == null ? "–" : `${Math.floor(s / 60)}:${(s % 60).toFixed(3).padStart(6, "0")}`;
+  const all = race.drivers.flatMap(d => d.time).filter(t => t != null).sort((a, b) => a - b);
+  const best = all[0] ?? 0, median = all[Math.floor(all.length / 2)] ?? 0;
+  // Racing laps only by default: slower laps become gaps, so the scale shows real pace.
+  const showAll = $("lapAll").checked;
+  const cap = median + (median - best) * 1.5 + 1;
+  $("lapAll").onchange = () => drawLapRace(base, round);
+  $("lapTimeHint").textContent = showAll ? "" : `· laps slower than ${lapFmt(cap).replace(/\d\d$/, "")} are left out, so lines have gaps there.`;
+  Object.keys(seen).forEach(k => delete seen[k]);
+  const timeSets = race.drivers.map((d, i) => mk(d, i, [null, ...d.time.map(t => showAll || t == null || t <= cap ? t : null)]));
+  if (state.lapTime) state.lapTime.destroy();
+  state.lapTime = new Chart($("lapTime"), {
+    type: "line", data: { labels, datasets: timeSets },
+    options: {
+      responsive: true, maintainAspectRatio: false, interaction: { mode: "nearest", intersect: false },
+      scales: {
+        x: { ticks: { color: muted, autoSkip: true, maxTicksLimit: 20 }, grid: { color: grid }, title: { display: true, text: "Lap", color: muted } },
+        y: { min: Math.floor(best - 0.5), max: showAll ? undefined : Math.ceil(cap),
+             ticks: { color: muted, stepSize: showAll ? undefined : 1, callback: v => lapFmt(v).replace(/\.\d+$/, "") }, grid: { color: grid } },
+      },
+      plugins: { legend, tooltip: {
+        itemSort: (a, b) => a.parsed.y - b.parsed.y,
+        callbacks: { title: it => `Lap ${labels[it[0].dataIndex]}`,
+                     label: it => { const d = race.drivers[it.datasetIndex];
+                                    return ` ${d.abbr} ${lapFmt(it.parsed.y)}${pitNote(d, labels[it.dataIndex])}`; } } } },
+    },
+  });
+  $("lapHint").textContent = `${race.gpName}, ${race.laps} laps. Top 10 finishers shown, click the legend to add or remove drivers. Dots mark pit stops.`;
+}
+
+function latest(rows) {
+  const r = Math.max(0, ...rows.map(x => x.round));
+  return rows.filter(x => x.round === r).sort((a, b) => (a.standing ?? 99) - (b.standing ?? 99));
+}
+
+function render() {
+  const done = state.rounds.filter(r => r.completed);
+  const next = state.rounds.find(r => !r.completed);
+  const lastRound = done[done.length - 1];
+  $("sub").textContent = lastRound
+    ? `${state.season} season · after Round ${lastRound.round}, ${lastRound.name} · ${done.length} of ${state.rounds.length} rounds`
+    : `${state.season} season · no races yet`;
+
+  const d = latest(state.drivers), c = latest(state.constructors);
+  const tile = (label, value, note) => `<div class="kpi"><div class="label">${label}</div><div class="value">${value}</div><div class="note">${note}</div></div>`;
+  $("kpis").innerHTML = [
+    d[0] ? tile("Drivers' leader", d[0].driver, `${d[0].cumulative} pts · ${d[0].team}`) : "",
+    d[1] ? tile("Gap to P2", `${d[1].gapToLeader} pts`, `${d[1].driver}`) : "",
+    c[0] ? tile("Constructors' leader", c[0].team, `${c[0].cumulative} pts · ${c[1] ? c[1].gapToLeader + " ahead of " + c[1].team : ""}`) : "",
+    next ? tile("Next race", next.gpName, `Round ${next.round} · ${new Date(next.date + "T12:00:00Z").toLocaleDateString(undefined, { day: "numeric", month: "short" })}${next.sprintWeekend ? " · sprint" : ""}`)
+         : tile("Season", "Complete", `${state.rounds.length} rounds`),
+  ].join("");
+
+  drawTable(done);
+  drawStats();
+  drawGrid(done);
+  if (window.Chart) { drawChart(done); drawSplit(); }
+}
+
+// A retirement: any race the driver started but did not finish, classified or not.
+const isOut = r => r.raced && r.racePos !== "DNS" && !!r.retired;
+const num = v => typeof v === "number" ? v : null;
+const avg = xs => xs.length ? (xs.reduce((a, b) => a + b, 0) / xs.length) : null;
+const fmt = (v, dp = 1) => v == null ? "–" : v.toFixed(dp);
+
+function aggregate(rows) {
+  const fin = rows.map(r => num(r.racePos)).filter(v => v != null);
+  const q = rows.map(r => num(r.qualiPos)).filter(v => v != null);
+  const pit = rows.filter(r => r.pitBest != null);
+  const gained = rows.map(r => r.gained).filter(v => v != null);
+  return {
+    poles: rows.filter(r => r.qualiPos === 1).length, avgQuali: avg(q),
+    wins: rows.filter(r => r.racePos === 1).length, podiums: rows.filter(r => num(r.racePos) && r.racePos <= 3).length,
+    avgFinish: avg(fin), best: fin.length ? Math.min(...fin) : null,
+    gained: gained.length ? gained.reduce((a, b) => a + b, 0) : null,
+    fastest: rows.filter(r => r.fastestLap).length, dnf: rows.filter(isOut).length,
+    stops: rows.reduce((a, r) => a + (r.pitStops || 0), 0),
+    pitBest: pit.length ? Math.min(...pit.map(r => r.pitBest)) : null,
+    pitAvg: (() => { const n = rows.reduce((a, r) => a + (r.pitStops || 0), 0);
+                     return n ? rows.reduce((a, r) => a + (r.pitTotal || 0), 0) / n : null; })(),
+    gp: rows.reduce((a, r) => a + r.racePoints, 0), sprint: rows.reduce((a, r) => a + r.sprintPoints, 0),
+  };
+}
+
+function drawStats() {
+  const isD = state.view === "drivers";
+  const order = latest(isD ? state.drivers : state.constructors);
+  const key = isD ? "driverId" : "teamId";
+  const signed = v => v == null ? "–" : v > 0 ? `<span class="up">+${v}</span>` : v < 0 ? `<span class="down">${v}</span>` : "0";
+  const head = `<tr><th>Pos</th><th>${isD ? "Driver" : "Team"}</th><th></th><th>Poles</th><th>Avg quali</th><th>Wins</th><th>Podiums</th>
+    <th>Avg finish</th><th>Best</th><th>Places gained</th><th>Fastest laps</th><th>DNFs</th><th>Pit stops</th><th>Avg pit (s)</th><th>Best pit (s)</th>
+    <th>GP pts</th><th>Sprint pts</th></tr>`;
+  const body = order.map(o => {
+    const a = aggregate(state.drivers.filter(r => r[key] === o[key] && r.raced));
+    return `<tr><td>${o.standing ?? ""}</td><td><span class="sw" style="background:${o.color}"></span>${isD ? o.driver : o.team}</td>
+      <td>${isD ? o.team : ""}</td><td>${a.poles}</td><td>${fmt(a.avgQuali)}</td><td>${a.wins}</td><td>${a.podiums}</td>
+      <td>${fmt(a.avgFinish)}</td><td>${a.best ?? "–"}</td><td>${signed(a.gained)}</td><td>${a.fastest}</td><td>${a.dnf}</td>
+      <td>${a.stops}</td><td>${fmt(a.pitAvg)}</td><td>${fmt(a.pitBest, 2)}</td><td>${a.gp}</td><td>${a.sprint}</td></tr>`;
+  }).join("");
+  $("stats").innerHTML = `<thead>${head}</thead><tbody>${body}</tbody>`;
+  $("statsTitle").textContent = isD ? "Drivers: qualifying, race results, reliability and pit stops"
+                                    : "Constructors: qualifying, race results, reliability and pit stops (both cars combined)";
+}
+
+function drawSplit() {
+  const isD = state.view === "drivers";
+  const order = latest(isD ? state.drivers : state.constructors);
+  const key = isD ? "driverId" : "teamId";
+  const rows = order.map(o => ({ o, ...aggregate((isD ? state.drivers : state.constructors).filter(r => r[key] === o[key])) }));
+  const labels = rows.map(r => isD ? r.o.abbr : r.o.team);
+  const muted = css("--muted"), grid = css("--grid");
+  if (state.split) state.split.destroy();
+  state.split = new Chart($("split"), {
+    type: "bar",
+    data: { labels, datasets: [
+      { label: "Grand Prix", data: rows.map(r => r.gp), backgroundColor: rows.map(r => r.o.color) },
+      { label: "Sprint", data: rows.map(r => r.sprint), backgroundColor: rows.map(r => r.o.color + "66") },
+    ] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: { x: { stacked: true, ticks: { color: muted }, grid: { display: false } },
+                y: { stacked: true, beginAtZero: true, ticks: { color: muted }, grid: { color: grid }, title: { display: true, text: "Points", color: muted } } },
+      plugins: { legend: { display: false },
+                 tooltip: { callbacks: { footer: items => `Total ${rows[items[0].dataIndex].gp + rows[items[0].dataIndex].sprint}` } } },
+    },
+  });
+  $("splitTitle").textContent = (isD ? "Drivers" : "Constructors") + ": Grand Prix points (solid) vs sprint points (light)";
+}
+
+function drawGrid(done) {
+  const order = latest(state.drivers);
+  const head = `<tr><th>Driver</th>${done.map(r => `<th title="${r.gpName}">${r.gp}${r.sprintWeekend ? "<sup>S</sup>" : ""}</th>`).join("")}</tr>`;
+  const body = order.map(o => {
+    const mine = state.drivers.filter(r => r.driverId === o.driverId);
+    const cells = done.map(rd => {
+      const r = mine.find(x => x.round === rd.round);
+      if (!r || !r.raced) return `<td class="res dns"></td>`;
+      const p = r.racePos;
+      const cls = p === 1 ? "p1" : p === 2 ? "p2" : p === 3 ? "p3" : r.racePoints > 0 ? "pts" : isOut(r) && typeof p !== "number" ? "out" : p === "DNS" ? "dns" : "";
+      const tip = [`${rd.gpName}`, r.qualiPos ? `Qualified P${r.qualiPos}` : "", r.grid ? `Started P${r.grid}` : "",
+                   typeof p === "number" ? `Finished P${p}` : p, r.retired ? `Retired: ${r.retired}` : "",
+                   r.racePoints ? `${r.racePoints} pts` : ""].filter(Boolean).join(" · ");
+      const marks = (r.qualiPos === 1 ? "P" : "") + (r.fastestLap ? "F" : "");
+      return `<td class="res ${cls}" title="${tip}">${typeof p === "number" ? p : p ?? ""}${marks ? `<sup>${marks}</sup>` : ""}</td>`;
+    }).join("");
+    return `<tr><td><span class="sw" style="background:${o.color}"></span>${o.abbr}</td>${cells}</tr>`;
+  }).join("");
+  $("grid").innerHTML = `<thead>${head}</thead><tbody>${body}</tbody>`;
+}
+
+function drawChart(done) {
+  const isD = state.view === "drivers";
+  const rows = isD ? state.drivers : state.constructors;
+  const key = isD ? "driverId" : "teamId";
+  const order = latest(rows).map(r => r[key]);
+  const seenTeam = {};
+  const datasets = order.map(id => {
+    const mine = rows.filter(r => r[key] === id);
+    const info = mine[mine.length - 1];
+    const second = isD && (seenTeam[info.teamId] = (seenTeam[info.teamId] || 0) + 1) > 1;
+    return {
+      label: isD ? info.abbr : info.team,
+      data: done.map(rd => mine.find(r => r.round === rd.round)?.cumulative ?? null),
+      borderColor: info.color, backgroundColor: info.color,
+      borderDash: second ? [6, 4] : [], borderWidth: 2, pointRadius: 2, pointHoverRadius: 5, tension: .15,
+      hidden: isD && order.indexOf(id) >= 10,
+    };
+  });
+  if (state.chart) state.chart.destroy();
+  const muted = css("--muted"), grid = css("--grid");
+  state.chart = new Chart($("chart"), {
+    type: "line",
+    data: { labels: done.map(r => r.gp), datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false, interaction: { mode: "nearest", intersect: false },
+      scales: {
+        x: { ticks: { color: muted }, grid: { color: grid } },
+        y: { beginAtZero: true, ticks: { color: muted }, grid: { color: grid }, title: { display: true, text: "Points", color: muted } },
+      },
+      plugins: {
+        legend: { position: "bottom", labels: { color: muted, boxWidth: 14, usePointStyle: false } },
+        tooltip: { itemSort: (a, b) => b.parsed.y - a.parsed.y,
+                   callbacks: { title: items => done[items[0].dataIndex].gpName } },
+      },
+    },
+  });
+  $("chartTitle").textContent = isD
+    ? "Drivers: cumulative points after each Grand Prix (top 10 shown, click the legend to add more)"
+    : "Constructors: cumulative points after each Grand Prix";
+}
+
+function drawTable(done) {
+  const isD = state.view === "drivers";
+  const rows = isD ? state.drivers : state.constructors;
+  const now = latest(rows);
+  const prevRound = done.length > 1 ? done[done.length - 2].round : null;
+  const prevPos = {};
+  rows.filter(r => r.round === prevRound).forEach(r => prevPos[r[isD ? "driverId" : "teamId"]] = r.standing);
+  const move = r => {
+    const p = prevPos[r[isD ? "driverId" : "teamId"]];
+    if (!p || !r.standing || p === r.standing) return "";
+    return p > r.standing ? `<span class="up">▲${p - r.standing}</span>` : `<span class="down">▼${r.standing - p}</span>`;
+  };
+  const head = isD
+    ? "<tr><th>Pos</th><th>Driver</th><th>Team</th><th>Points</th><th>Gap</th><th>Last GP</th><th>Wins</th><th>Podiums</th><th></th></tr>"
+    : "<tr><th>Pos</th><th>Team</th><th></th><th>Points</th><th>Gap</th><th>Last GP</th><th></th></tr>";
+  const body = now.map(r => isD
+    ? `<tr><td>${r.standing ?? ""}</td><td><span class="sw" style="background:${r.color}"></span>${r.driver}</td><td>${r.team}</td>
+       <td class="pts">${r.cumulative}</td><td>${r.gapToLeader || "–"}</td><td>${r.raced ? "+" + r.points : "DNS"}</td>
+       <td>${r.wins}</td><td>${r.podiums}</td><td>${move(r)}</td></tr>`
+    : `<tr><td>${r.standing ?? ""}</td><td><span class="sw" style="background:${r.color}"></span>${r.team}</td><td></td>
+       <td class="pts">${r.cumulative}</td><td>${r.gapToLeader || "–"}</td><td>+${r.points}</td><td>${move(r)}</td></tr>`).join("");
+  $("table").innerHTML = `<thead>${head}</thead><tbody>${body}</tbody>`;
+  $("tableTitle").textContent = isD ? "Drivers' standings" : "Constructors' standings";
+}
+
+init();
+</script>
+</body>
+</html>
