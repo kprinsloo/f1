@@ -3,7 +3,7 @@
  "source": {
   "name": "F1DB",
   "url": "https://github.com/f1db/f1db",
-  "commit": "0e9ea3c3a48d698b1beabd4a23c9efac40a8d4ef"
+  "commit": "9dbbb9f67dc5fa3d499061efb56d24aa4f1e261d"
  },
  "rounds": [
   {
@@ -214,7 +214,7 @@
    "abbr": "LAS",
    "date": "2026-11-22",
    "sprint": false,
-   "completed": false
+   "completed": true
   },
   {
    "round": 22,
@@ -5815,7 +5815,7 @@
    "fastestLap": true,
    "pitStops": 2,
    "pitBest": 24.963,
-   "pitTotal": 49.926
+   "pitTotal": 1867.661
   },
   {
    "round": 13,
@@ -5833,9 +5833,9 @@
    "grid": 2,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1846.248,
+   "pitTotal": 1846.248
   },
   {
    "round": 13,
@@ -5855,7 +5855,7 @@
    "fastestLap": false,
    "pitStops": 2,
    "pitBest": 24.933,
-   "pitTotal": 49.866
+   "pitTotal": 1869.079
   },
   {
    "round": 13,
@@ -5873,9 +5873,9 @@
    "grid": 8,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1840.768,
+   "pitTotal": 1840.768
   },
   {
    "round": 13,
@@ -5893,9 +5893,9 @@
    "grid": 6,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1840.438,
+   "pitTotal": 1840.438
   },
   {
    "round": 13,
@@ -5913,9 +5913,9 @@
    "grid": 4,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1845.216,
+   "pitTotal": 1845.216
   },
   {
    "round": 13,
@@ -5933,9 +5933,9 @@
    "grid": 1,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1844.663,
+   "pitTotal": 1844.663
   },
   {
    "round": 13,
@@ -5953,9 +5953,9 @@
    "grid": 9,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1842.62,
+   "pitTotal": 1842.62
   },
   {
    "round": 13,
@@ -5973,9 +5973,9 @@
    "grid": 7,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1844.996,
+   "pitTotal": 1844.996
   },
   {
    "round": 13,
@@ -5993,9 +5993,9 @@
    "grid": 15,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1840.008,
+   "pitTotal": 1840.008
   },
   {
    "round": 13,
@@ -6013,9 +6013,9 @@
    "grid": 10,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1842.781,
+   "pitTotal": 1842.781
   },
   {
    "round": 13,
@@ -6035,7 +6035,7 @@
    "fastestLap": false,
    "pitStops": 2,
    "pitBest": 24.246,
-   "pitTotal": 48.492
+   "pitTotal": 1868.358
   },
   {
    "round": 13,
@@ -6055,7 +6055,7 @@
    "fastestLap": false,
    "pitStops": 2,
    "pitBest": 24.57,
-   "pitTotal": 49.14
+   "pitTotal": 1867.312
   },
   {
    "round": 13,
@@ -6075,7 +6075,7 @@
    "fastestLap": false,
    "pitStops": 2,
    "pitBest": 31.197,
-   "pitTotal": 62.394
+   "pitTotal": 1872.718
   },
   {
    "round": 13,
@@ -6093,9 +6093,9 @@
    "grid": 11,
    "retired": null,
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1843.448,
+   "pitTotal": 1843.448
   },
   {
    "round": 13,
@@ -6115,7 +6115,7 @@
    "fastestLap": false,
    "pitStops": 2,
    "pitBest": 27.286,
-   "pitTotal": 54.572
+   "pitTotal": 1869.932
   },
   {
    "round": 13,
@@ -6135,7 +6135,7 @@
    "fastestLap": false,
    "pitStops": 2,
    "pitBest": 26.394,
-   "pitTotal": 52.788
+   "pitTotal": 1868.914
   },
   {
    "round": 13,
@@ -6155,7 +6155,7 @@
    "fastestLap": false,
    "pitStops": 2,
    "pitBest": 28.458,
-   "pitTotal": 56.916
+   "pitTotal": 1871.027
   },
   {
    "round": 13,
@@ -6175,7 +6175,7 @@
    "fastestLap": false,
    "pitStops": 2,
    "pitBest": 35.251,
-   "pitTotal": 70.502
+   "pitTotal": 1877.07
   },
   {
    "round": 13,
@@ -6193,9 +6193,9 @@
    "grid": 18,
    "retired": "Hydraulics",
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1842.026,
+   "pitTotal": 1842.026
   },
   {
    "round": 13,
@@ -6213,9 +6213,9 @@
    "grid": 22,
    "retired": "Mechanical",
    "fastestLap": false,
-   "pitStops": 0,
-   "pitBest": null,
-   "pitTotal": null
+   "pitStops": 1,
+   "pitBest": 1839.472,
+   "pitTotal": 1839.472
   },
   {
    "round": 13,
@@ -9536,6 +9536,506 @@
    "pitStops": 0,
    "pitBest": null,
    "pitTotal": null
+  },
+  {
+   "round": 21,
+   "driverId": "max-verstappen",
+   "constructorId": "red-bull",
+   "racePoints": 25,
+   "sprintPoints": 0,
+   "points": 25,
+   "racePos": 1,
+   "sprintPos": null,
+   "cumulative": 304,
+   "standing": 2,
+   "started": true,
+   "qualiPos": 2,
+   "grid": 1,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 21.22,
+   "pitTotal": 21.22
+  },
+  {
+   "round": 21,
+   "driverId": "lando-norris",
+   "constructorId": "mclaren",
+   "racePoints": 18,
+   "sprintPoints": 0,
+   "points": 18,
+   "racePos": 2,
+   "sprintPos": null,
+   "cumulative": 264,
+   "standing": 5,
+   "started": true,
+   "qualiPos": 4,
+   "grid": 3,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 24.814,
+   "pitTotal": 24.814
+  },
+  {
+   "round": 21,
+   "driverId": "oscar-piastri",
+   "constructorId": "mclaren",
+   "racePoints": 15,
+   "sprintPoints": 0,
+   "points": 15,
+   "racePos": 3,
+   "sprintPos": null,
+   "cumulative": 167,
+   "standing": 7,
+   "started": true,
+   "qualiPos": 7,
+   "grid": 17,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 27.475,
+   "pitTotal": 27.475
+  },
+  {
+   "round": 21,
+   "driverId": "kimi-antonelli",
+   "constructorId": "mercedes",
+   "racePoints": 12,
+   "sprintPoints": 0,
+   "points": 12,
+   "racePos": 4,
+   "sprintPos": null,
+   "cumulative": 402,
+   "standing": 1,
+   "started": true,
+   "qualiPos": 1,
+   "grid": 6,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 26.297,
+   "pitTotal": 26.297
+  },
+  {
+   "round": 21,
+   "driverId": "pierre-gasly",
+   "constructorId": "alpine",
+   "racePoints": 10,
+   "sprintPoints": 0,
+   "points": 10,
+   "racePos": 5,
+   "sprintPos": null,
+   "cumulative": 52,
+   "standing": 10,
+   "started": true,
+   "qualiPos": 9,
+   "grid": 8,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 22.645,
+   "pitTotal": 22.645
+  },
+  {
+   "round": 21,
+   "driverId": "franco-colapinto",
+   "constructorId": "alpine",
+   "racePoints": 8,
+   "sprintPoints": 0,
+   "points": 8,
+   "racePos": 6,
+   "sprintPos": null,
+   "cumulative": 35,
+   "standing": 12,
+   "started": true,
+   "qualiPos": 10,
+   "grid": 9,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 23.343,
+   "pitTotal": 23.343
+  },
+  {
+   "round": 21,
+   "driverId": "lewis-hamilton",
+   "constructorId": "ferrari",
+   "racePoints": 6,
+   "sprintPoints": 0,
+   "points": 6,
+   "racePos": 7,
+   "sprintPos": null,
+   "cumulative": 267,
+   "standing": 3,
+   "started": true,
+   "qualiPos": 12,
+   "grid": 11,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 32.472,
+   "pitTotal": 32.472
+  },
+  {
+   "round": 21,
+   "driverId": "carlos-sainz-jr",
+   "constructorId": "williams",
+   "racePoints": 4,
+   "sprintPoints": 0,
+   "points": 4,
+   "racePos": 8,
+   "sprintPos": null,
+   "cumulative": 11,
+   "standing": 16,
+   "started": true,
+   "qualiPos": 14,
+   "grid": 20,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 22.157,
+   "pitTotal": 22.157
+  },
+  {
+   "round": 21,
+   "driverId": "george-russell",
+   "constructorId": "mercedes",
+   "racePoints": 2,
+   "sprintPoints": 0,
+   "points": 2,
+   "racePos": 9,
+   "sprintPos": null,
+   "cumulative": 264,
+   "standing": 4,
+   "started": true,
+   "qualiPos": 3,
+   "grid": 2,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 22.09,
+   "pitTotal": 22.09
+  },
+  {
+   "round": 21,
+   "driverId": "charles-leclerc",
+   "constructorId": "ferrari",
+   "racePoints": 1,
+   "sprintPoints": 0,
+   "points": 1,
+   "racePos": 10,
+   "sprintPos": null,
+   "cumulative": 250,
+   "standing": 6,
+   "started": true,
+   "qualiPos": 11,
+   "grid": 10,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 22.159,
+   "pitTotal": 22.159
+  },
+  {
+   "round": 21,
+   "driverId": "nico-hulkenberg",
+   "constructorId": "audi",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": 11,
+   "sprintPos": null,
+   "cumulative": 14,
+   "standing": 15,
+   "started": true,
+   "qualiPos": 13,
+   "grid": 12,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 21.894,
+   "pitTotal": 21.894
+  },
+  {
+   "round": 21,
+   "driverId": "gabriel-bortoleto",
+   "constructorId": "audi",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": 12,
+   "sprintPos": null,
+   "cumulative": 14,
+   "standing": 14,
+   "started": true,
+   "qualiPos": 15,
+   "grid": 13,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 21.781,
+   "pitTotal": 21.781
+  },
+  {
+   "round": 21,
+   "driverId": "oliver-bearman",
+   "constructorId": "haas",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": 13,
+   "sprintPos": null,
+   "cumulative": 23,
+   "standing": 13,
+   "started": true,
+   "qualiPos": "NC",
+   "grid": 22,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 22.855,
+   "pitTotal": 22.855
+  },
+  {
+   "round": 21,
+   "driverId": "liam-lawson",
+   "constructorId": "racing-bulls",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": 14,
+   "sprintPos": null,
+   "cumulative": 89,
+   "standing": 9,
+   "started": true,
+   "qualiPos": 8,
+   "grid": 22,
+   "retired": null,
+   "fastestLap": true,
+   "pitStops": 1,
+   "pitBest": 21.681,
+   "pitTotal": 21.681
+  },
+  {
+   "round": 21,
+   "driverId": "isack-hadjar",
+   "constructorId": "red-bull",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": 15,
+   "sprintPos": null,
+   "cumulative": 122,
+   "standing": 8,
+   "started": true,
+   "qualiPos": 5,
+   "grid": 4,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 2,
+   "pitBest": 23.338,
+   "pitTotal": 56.469
+  },
+  {
+   "round": 21,
+   "driverId": "rafael-camara",
+   "constructorId": "haas",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": 16,
+   "sprintPos": null,
+   "cumulative": 0,
+   "standing": 25,
+   "started": true,
+   "qualiPos": 17,
+   "grid": 15,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 2,
+   "pitBest": 22.599,
+   "pitTotal": 50.367
+  },
+  {
+   "round": 21,
+   "driverId": "lance-stroll",
+   "constructorId": "aston-martin",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": 17,
+   "sprintPos": null,
+   "cumulative": 0,
+   "standing": 22,
+   "started": true,
+   "qualiPos": 20,
+   "grid": 21,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 22.307,
+   "pitTotal": 22.307
+  },
+  {
+   "round": 21,
+   "driverId": "valtteri-bottas",
+   "constructorId": "cadillac",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": 18,
+   "sprintPos": null,
+   "cumulative": 0,
+   "standing": 23,
+   "started": true,
+   "qualiPos": 21,
+   "grid": 19,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 2,
+   "pitBest": 21.757,
+   "pitTotal": 43.827
+  },
+  {
+   "round": 21,
+   "driverId": "fernando-alonso",
+   "constructorId": "aston-martin",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": 19,
+   "sprintPos": null,
+   "cumulative": 7,
+   "standing": 18,
+   "started": true,
+   "qualiPos": 19,
+   "grid": 18,
+   "retired": "Engine",
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 21.488,
+   "pitTotal": 21.488
+  },
+  {
+   "round": 21,
+   "driverId": "arvid-lindblad",
+   "constructorId": "racing-bulls",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": "DNF",
+   "sprintPos": null,
+   "cumulative": 38,
+   "standing": 11,
+   "started": true,
+   "qualiPos": 6,
+   "grid": 5,
+   "retired": "Spun off",
+   "fastestLap": false,
+   "pitStops": 1,
+   "pitBest": 24.428,
+   "pitTotal": 24.428
+  },
+  {
+   "round": 21,
+   "driverId": "sergio-perez",
+   "constructorId": "cadillac",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": "DNF",
+   "sprintPos": null,
+   "cumulative": 0,
+   "standing": 24,
+   "started": true,
+   "qualiPos": 18,
+   "grid": 16,
+   "retired": "Collision",
+   "fastestLap": false,
+   "pitStops": 0,
+   "pitBest": null,
+   "pitTotal": null
+  },
+  {
+   "round": 21,
+   "driverId": "alexander-albon",
+   "constructorId": "williams",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": "DNS",
+   "sprintPos": null,
+   "cumulative": 5,
+   "standing": 19,
+   "started": true,
+   "qualiPos": 16,
+   "grid": 14,
+   "retired": "Brakes",
+   "fastestLap": false,
+   "pitStops": 0,
+   "pitBest": null,
+   "pitTotal": null
+  },
+  {
+   "round": 21,
+   "driverId": "esteban-ocon",
+   "constructorId": null,
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": null,
+   "sprintPos": null,
+   "cumulative": 7,
+   "standing": 17,
+   "started": false,
+   "qualiPos": null,
+   "grid": null,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 0,
+   "pitBest": null,
+   "pitTotal": null
+  },
+  {
+   "round": 21,
+   "driverId": "yuki-tsunoda",
+   "constructorId": null,
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": null,
+   "sprintPos": null,
+   "cumulative": 1,
+   "standing": 20,
+   "started": false,
+   "qualiPos": null,
+   "grid": null,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 0,
+   "pitBest": null,
+   "pitTotal": null
+  },
+  {
+   "round": 21,
+   "driverId": "ryo-hirakawa",
+   "constructorId": null,
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "racePos": null,
+   "sprintPos": null,
+   "cumulative": 1,
+   "standing": 21,
+   "started": false,
+   "qualiPos": null,
+   "grid": null,
+   "retired": null,
+   "fastestLap": false,
+   "pitStops": 0,
+   "pitBest": null,
+   "pitTotal": null
   }
  ],
  "constructorRounds": [
@@ -11518,9 +12018,108 @@
    "points": 0,
    "cumulative": 12,
    "standing": 9
+  },
+  {
+   "round": 21,
+   "constructorId": "alpine",
+   "racePoints": 18,
+   "sprintPoints": 0,
+   "points": 18,
+   "cumulative": 87,
+   "standing": 6
+  },
+  {
+   "round": 21,
+   "constructorId": "aston-martin",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "cumulative": 7,
+   "standing": 10
+  },
+  {
+   "round": 21,
+   "constructorId": "audi",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "cumulative": 28,
+   "standing": 8
+  },
+  {
+   "round": 21,
+   "constructorId": "cadillac",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "cumulative": 0,
+   "standing": 11
+  },
+  {
+   "round": 21,
+   "constructorId": "ferrari",
+   "racePoints": 7,
+   "sprintPoints": 0,
+   "points": 7,
+   "cumulative": 517,
+   "standing": 2
+  },
+  {
+   "round": 21,
+   "constructorId": "haas",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "cumulative": 31,
+   "standing": 7
+  },
+  {
+   "round": 21,
+   "constructorId": "mclaren",
+   "racePoints": 33,
+   "sprintPoints": 0,
+   "points": 33,
+   "cumulative": 431,
+   "standing": 4
+  },
+  {
+   "round": 21,
+   "constructorId": "mercedes",
+   "racePoints": 14,
+   "sprintPoints": 0,
+   "points": 14,
+   "cumulative": 666,
+   "standing": 1
+  },
+  {
+   "round": 21,
+   "constructorId": "racing-bulls",
+   "racePoints": 0,
+   "sprintPoints": 0,
+   "points": 0,
+   "cumulative": 114,
+   "standing": 5
+  },
+  {
+   "round": 21,
+   "constructorId": "red-bull",
+   "racePoints": 25,
+   "sprintPoints": 0,
+   "points": 25,
+   "cumulative": 440,
+   "standing": 3
+  },
+  {
+   "round": 21,
+   "constructorId": "williams",
+   "racePoints": 4,
+   "sprintPoints": 0,
+   "points": 4,
+   "cumulative": 16,
+   "standing": 9
   }
  ],
  "warnings": [],
- "contentHash": "17ee907b8537",
- "generatedAt": "2026-11-16T16:26:00+00:00"
+ "contentHash": "f92e5bdd3c73",
+ "generatedAt": "2026-11-23T18:45:19+00:00"
 }
